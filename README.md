@@ -1,59 +1,86 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
+  <img src="./public/fotocamilo.jpeg" width="150" alt="Foto de Camilo Rojas" style="border-radius: 50%;">
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+  # Camilo Rojas 👨‍💻
+  ### Portafolio Personal | Full Stack Developer en Formación
 
-## About Laravel
+  <p>
+    <a href="https://linkedin.com/in/tu-usuario" target="_blank">
+      <img src="https://img.shields.io/badge/-LinkedIn-0077B5?style=flat&logo=Linkedin&logoColor=white">
+    </a>
+    <a href="mailto:tu-email@gmail.com">
+      <img src="https://img.shields.io/badge/-Email-D14836?style=flat&logo=Gmail&logoColor=white">
+    </a>
+  </p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+  ¡Bienvenido a mi repositorio! Este proyecto es una aplicación web SPA (Single Page Application) construida con **Laravel**, diseñada para presentar mi perfil profesional, mis habilidades técnicas y mis objetivos de carrera.
+</div>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 👤 Perfil
+**Desarrollador en Formación | Entusiasta de la Tecnología**
 
-## Learning Laravel
+Soy una persona apasionada por la tecnología y el desarrollo de software. Este portafolio refleja mi compromiso con el aprendizaje continuo y mi capacidad para construir aplicaciones web modernas, limpias y escalables.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## ⚡ Mis Intereses
+*Lo que me apasiona y me inspira*
 
-## Laravel Sponsors
+| 💻 Nuevas Tecnologías | 🎮 Videojuegos | 🏃 Deportes | 🎬 Arte y Cine |
+|:---:|:---:|:---:|:---:|
+| IA, Cloud Computing y Dev Trends | Análisis de mecánicas y diseño lógico | Disciplina y mente despejada | Creatividad visual y narrativa |
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 🛠 Habilidades
+*Mi stack tecnológico y competencias profesionales*
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 💻 Tecnologías (Nivel Técnico)
 
-## Contributing
+![HTML5](https://img.shields.io/badge/HTML5-80%25-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-80%25-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-20%25-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![PHP](https://img.shields.io/badge/PHP-5%25-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![Laravel](https://img.shields.io/badge/Laravel-Learning-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![SQL](https://img.shields.io/badge/SQL-50%25-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 🧠 Habilidades Blandas
+- ✅ **Lógica de Programación**
+- ✅ **Trabajo en Equipo (Git/GitHub)**
+- ✅ **Aprendizaje Autodidacta**
+- ✅ **Responsabilidad y Adaptabilidad**
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 🎯 Metas y Visión
+*Mi plan de carrera y objetivos profesionales*
 
-## Security Vulnerabilities
+### 🌱 Corto Plazo (1 - 2 Años)
+> *Enfoque: Backend & Fundamentos*
+* Conseguir mi primer empleo como **Backend Developer**.
+* Dominar el framework Laravel y la creación de APIs RESTful.
+* Mejorar significativamente mi nivel de inglés técnico.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 🚀 Mediano Plazo (2 - 5 Años)
+> *Enfoque: Full Stack & Cloud*
+* Convertirme en **Full Stack Developer**.
+* Aprender a desplegar y gestionar aplicaciones en la nube (AWS/Azure).
+* Liderar pequeños equipos de desarrollo ágil.
 
-## License
+### 💎 Largo Plazo (5+ Años)
+> *Enfoque: Arquitectura & Liderazgo*
+* Ser **Arquitecto de Software**.
+* Contribuir activamente a grandes proyectos Open Source.
+* Mentorear a nuevas generaciones de programadores.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## ⚙️ Instalación del Proyecto
+
+Si deseas clonar y ejecutar este proyecto localmente:
+
+1. **Clonar el repositorio:**
+   ```bash
+   git clone [https://github.com/tu-usuario/tu-repo.git](https://github.com/tu-usuario/tu-repo.git)

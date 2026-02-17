@@ -10,6 +10,5 @@ Route::controller(ProductController::class)->prefix('product')->group(function (
     Route::get('/', 'index'); 
     Route::get('/create', 'create');
     Route::get('/{id}/{categoria?}', 'show');
-
 });
 

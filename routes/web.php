@@ -5,6 +5,11 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class);
-Route::get('/product', [ProductController::class, 'index']);
-Route::get('/product/create', [ProductController::class, 'create']);
-Route::get('/product/{id}/{categoria?}', [ProductController::class, 'show']);
+
+Route::controller(ProductController::class)->prefix('product')->group(function () {
+    Route::get('/', 'index'); 
+    Route::get('/create', 'create');
+    Route::get('/{id}/{categoria?}', 'show');
+
+});
+

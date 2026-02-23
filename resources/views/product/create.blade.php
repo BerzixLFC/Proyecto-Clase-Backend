@@ -3,191 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuevo Producto | Dashboard</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Registrar Nuevo Producto</title>
 
     <style>
-        /* --- RESET & BASICS --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        /* Estilos generales para que el fondo sea oscuro y el footer baje */
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f3f4f6;
-            color: #1f2937;
+            margin: 0;
+            padding: 0;
+            background-color: #0b0b0f;
+            font-family: system-ui, -apple-system, sans-serif;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
 
-        /* --- HEADER & NAV --- */
-        header {
-            background-color: #ffffff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            padding: 0 2rem;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+        main {
+            flex: 1; /* Permite que el contenido empuje el footer hacia abajo */
         }
 
-        .logo { font-weight: 600; font-size: 1.25rem; color: #4f46e5; display: flex; align-items: center; gap: 8px; }
-        nav { display: flex; gap: 2rem; }
-        nav a { text-decoration: none; color: #6b7280; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; }
-        nav a:hover, nav a.active { color: #4f46e5; }
-
-        /* --- MAIN CONTAINER --- */
-        main {
-            flex: 1;
+        /* Tus estilos originales */
+        .registro-wrapper {
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 3rem 1rem;
+            align-items: flex-start;
+            padding: 60px 20px;
         }
 
-        /* --- CARD FORMULARIO --- */
-        .card {
-            background: white;
-            width: 100%;
-            max-width: 600px; /* Un poco más ancho para que quepan bien los inputs dobles */
-            border-radius: 16px;
-            padding: 2.5rem;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-header { text-align: center; margin-bottom: 2rem; }
-        .card-header h2 { font-size: 1.5rem; color: #111827; }
-        .card-header p { color: #6b7280; font-size: 0.9rem; margin-top: 5px; }
-
-        /* --- INPUTS & GRID --- */
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
-            gap: 20px;
-        }
-
-        /* En móvil, que se ponga en una sola columna */
-        @media (max-width: 500px) { .form-grid { grid-template-columns: 1fr; } }
-
-        .form-group { margin-bottom: 1.25rem; }
-        .form-group.full-width { grid-column: span 2; } /* Para que descripción e imagen ocupen todo el ancho */
-        @media (max-width: 500px) { .form-group.full-width { grid-column: span 1; } }
-
-        label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 500; color: #374151; }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #e5e7eb;
+        .form-card {
+            background-color: #111;
+            border: 1px solid #1f1f25;
             border-radius: 8px;
-            background-color: #f9fafb;
-            font-family: inherit;
-            font-size: 0.95rem;
-            color: #1f2937;
-            transition: all 0.2s;
-        }
-
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            background-color: #fff;
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-        }
-
-        /* Estilo especial para input file */
-        input[type="file"] {
-            background-color: white;
-            padding: 0.5rem;
-        }
-
-        /* --- BUTTON --- */
-        .btn-submit {
+            padding: 40px;
             width: 100%;
-            padding: 0.875rem;
-            background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
+            max-width: 600px;
+            color: #f5f5f7;
+        }
+
+        .form-card h2 {
+            font-size: 2rem;
             font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.1s ease, box-shadow 0.2s ease;
-            margin-top: 1rem;
+            margin-bottom: 30px;
+            letter-spacing: -0.5px;
+            margin-top: 0;
         }
-        .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
 
-        /* --- FOOTER --- */
-        footer { text-align: center; padding: 1.5rem; color: #9ca3af; font-size: 0.85rem; border-top: 1px solid #e5e7eb; background: #fff; }
+        .form-group {
+            margin-bottom: 22px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            background-color: #0f0f14;
+            border: 1px solid #222;
+            border-radius: 6px;
+            padding: 12px 14px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.2s ease;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            border-color: #8bb9fe;
+            box-shadow: 0 0 0 2px rgba(139,185,254,0.2);
+        }
+
+        .form-control::placeholder {
+            color: #666;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        input[type="file"].form-control {
+            padding: 10px;
+            background-color: #0f0f14;
+            color: #aaa;
+        }
+
+        input[type="file"]::file-selector-button {
+            background-color: #1f1f25;
+            color: #fff;
+            border: 1px solid #333;
+            padding: 6px 12px;
+            margin-right: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background-color: #2a2a30;
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 1em;
+            padding-right: 35px;
+            cursor: pointer;
+        }
+
+        .btn-guardar {
+            background-color: #ffffff;
+            color: #0b0b0f;
+            padding: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-guardar:hover {
+            background-color: #ffffff;
+        }
+
+        .btn-guardar:active {
+            transform: scale(0.98);
+        }
+
+        .volver-link {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .volver-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo"><span>⚡</span> ProductManager</div>
-        <nav>
-            <a href="/">Dashboard</a>
-            <a href="/product">Inventario</a>
-            <a href="/product/create" class="active">Nuevo</a>
-        </nav>
-    </header>
+    @include('Layouts.navbar')
 
     <main>
-        <div class="card">
-            <div class="card-header">
-                <h2>Registrar Producto</h2>
-                <p>Completa la información del nuevo ítem</p>
-            </div>
+        <div class="registro-wrapper">
+            <div class="form-card">
+                <h2>Registrar Nuevo Producto</h2>
 
-            <form action="" method="POST" enctype="multipart/form-data">
-                @csrf 
-
-                <div class="form-grid">
-                    
                     <div class="form-group">
-                        <label for="code">Código (SKU)</label>
-                        <input type="text" id="code" name="code" placeholder="Ej. PROD-001" required>
+                        <label for="nombre">Nombre del Producto</label>
+                        <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Ej: MacBook Pro M3" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="name">Nombre</label>
-                        <input type="text" id="name" name="name" placeholder="Ej. iPhone 15" required>
+                        <label for="precio">Precio (USD)</label>
+                        <input type="number" id="precio" name="precio" class="form-control" placeholder="1999.00" step="0.01" min="0" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="price">Precio ($)</label>
-                        <input type="number" id="price" name="price" step="0.01" placeholder="0.00" required>
+                        <label for="descripcion">Descripción</label>
+                        <textarea id="descripcion" name="descripcion" class="form-control" placeholder="Chip M3, 16GB RAM, 512GB SSD..."></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label for="status">Estado</label>
-                        <select id="status" name="status">
-                            <option value="activo">✅ Activo</option>
-                            <option value="inactivo">⛔ Inactivo</option>
-                            <option value="pendiente">⏳ Pendiente</option>
+                        <label for="imagen">Imagen del Producto</label>
+                        <input type="file" id="imagen" name="imagen" class="form-control" accept="image/*">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="estado">Estado</label>
+                        <select id="estado" name="estado" class="form-control">
+                            <option value="disponible">Disponible</option>
+                            <option value="agotado">Agotado</option>
+                            <option value="oculto">Oculto</option>
                         </select>
                     </div>
 
-                    <div class="form-group full-width">
-                        <label for="image">Imagen del Producto</label>
-                        <input type="file" id="image" name="image" accept="image/*">
-                    </div>
-
-                    <div class="form-group full-width">
-                        <label for="description">Descripción</label>
-                        <textarea id="description" name="description" rows="4" placeholder="Detalles técnicos y características..."></textarea>
-                    </div>
-
-                </div> <button type="submit" class="btn-submit">Guardar Producto</button>
-            </form>
+                    <button type="submit" class="btn-guardar">Guardar Producto</button>
+                </form>
+            </div>
         </div>
     </main>
 
-    <footer>
-        &copy; 2024 ProductManager System. Hecho con Laravel.
-    </footer>
+    @include('Layouts.footer')
 
 </body>
 </html>

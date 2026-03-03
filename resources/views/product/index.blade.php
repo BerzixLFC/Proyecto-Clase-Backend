@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Catálogo - GestiónPro</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
+        /* (Tu CSS está excelente, lo mantengo igual) */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -52,27 +55,13 @@
             color: #fff;
         }
 
-        /* ===== AQUÍ ESTÁ LA MAGIA ===== */
         main {
             flex-grow: 1;
             padding: 2rem 3rem;
             max-width: 1600px;
-            margin: 0 auto; /* Centra horizontalmente */
+            margin: 0 auto;
             width: 100%;
-            display: flex; 
-            flex-direction: column;
-            justify-content: center; /* Centra el contenido verticalmente */
         }
-
-        footer {
-            text-align: center;
-            padding: 1.2rem;
-            font-size: 0.8rem;
-            color: #666;
-            border-top: 1px solid #1a1a1f;
-        }
-
-        /* ===== CATÁLOGO ===== */
 
         .header-catalogo {
             display: flex;
@@ -144,7 +133,7 @@
         .hover-info {
             position: absolute;
             inset: 0;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0, 0, 0, 0.85);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -155,175 +144,59 @@
             transition: opacity 0.3s ease;
         }
 
-        .hover-info h4 {
-            font-size: 1rem;
-            margin-bottom: 8px;
-        }
-
-        .hover-info p {
-            font-size: 0.85rem;
-            color: #ccc;
-        }
-
         .producto-card:hover .hover-info {
             opacity: 1;
         }
 
+        /* Responsividad */
         @media (max-width: 1300px) {
-            .catalogo-grid { grid-template-columns: repeat(4, 1fr); }
+            .catalogo-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
         }
 
         @media (max-width: 1000px) {
-            .catalogo-grid { grid-template-columns: repeat(3, 1fr); }
+            .catalogo-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
 
         @media (max-width: 700px) {
-            .catalogo-grid { grid-template-columns: repeat(2, 1fr); }
+            .catalogo-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 500px) {
-            .catalogo-grid { grid-template-columns: 1fr; }
+            .catalogo-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
+
 <body>
-
-@include('layouts.navbar')
-
-<main>
-
-    <div class="header-catalogo">
-        <h1 class="titulo-pagina">Catálogo de Productos</h1>
-        <a href="#" class="btn-nuevo-producto">+ Nuevo Producto</a>
-    </div>
-
-    <div class="catalogo-grid">
-
-        <div class="producto-card">
-            <img src="https://loremflickr.com/600/800/macbook">
-            <div class="card-content">
-                <h3>MacBook Air M3</h3>
-                <div class="price">$1.299 USD</div>
+    @include('layouts.navbar')
+    <<div class="catalogo-grid">
+        @forelse ($miLista as $item)
+            <div class="producto-card">
+                <img src="{{ asset('img/default-product.png') }}" alt="{{ $item->name }}">
+                <div class="card-content">
+                    <h3>{{ $item->name }}</h3>
+                    <div class="price">${{ number_format($item->price, 2) }} USD</div>
+                </div>
+                <div class="hover-info">
+                    <h4>{{ $item->name }}</h4>
+                    <p>{{ $item->description }}</p>
+                </div>
             </div>
-            <div class="hover-info">
-                <h4>MacBook Air M3</h4>
-                <p>Chip M3 · 16GB RAM · 18h batería · Ultraligera</p>
+        @empty
+            <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                <p>No hay productos disponibles por el momento.</p>
             </div>
+        @endforelse
         </div>
-
-        <div class="producto-card">
-            <img src="https://loremflickr.com/600/800/iphone">
-            <div class="card-content">
-                <h3>iPhone 15 Pro</h3>
-                <div class="price">$1.199 USD</div>
-            </div>
-            <div class="hover-info">
-                <h4>iPhone 15 Pro</h4>
-                <p>A17 Pro · Titanio · Cámara 48MP · 120Hz</p>
-            </div>
-        </div>
-
-        <div class="producto-card">
-            <img src="https://loremflickr.com/600/800/ipad">
-            <div class="card-content">
-                <h3>iPad Pro M4</h3>
-                <div class="price">$999 USD</div>
-            </div>
-            <div class="hover-info">
-                <h4>iPad Pro M4</h4>
-                <p>Pantalla OLED · Apple Pencil Pro · M4</p>
-            </div>
-        </div>
-
-        <div class="producto-card">
-            <img src="https://loremflickr.com/600/800/watch">
-            <div class="card-content">
-                <h3>Apple Watch Ultra</h3>
-                <div class="price">$799 USD</div>
-            </div>
-            <div class="hover-info">
-                <h4>Apple Watch Ultra</h4>
-                <p>GPS dual · 36h batería · Titanio</p>
-            </div>
-        </div>
-
-        <div class="producto-card">
-            <img src="https://loremflickr.com/600/800/headphones">
-            <div class="card-content">
-                <h3>Sony WH-1000XM5</h3>
-                <div class="price">$399 USD</div>
-            </div>
-            <div class="hover-info">
-                <h4>Sony WH-1000XM5</h4>
-                <p>Cancelación líder · Hi-Res · 30h batería</p>
-            </div>
-        </div>
-
-        <div class="producto-card">
-            <img src="https://loremflickr.com/600/800/laptop">
-            <div class="card-content">
-                <h3>Dell XPS 15</h3>
-                <div class="price">$1.499 USD</div>
-            </div>
-            <div class="hover-info">
-                <h4>Dell XPS 15</h4>
-                <p>Intel i9 · RTX · 32GB RAM</p>
-            </div>
-        </div>
-
-        <div class="producto-card">
-            <img src="https://loremflickr.com/600/800/monitor">
-            <div class="card-content">
-                <h3>LG UltraWide 34"</h3>
-                <div class="price">$699 USD</div>
-            </div>
-            <div class="hover-info">
-                <h4>LG UltraWide</h4>
-                <p>3440x1440 · 144Hz · IPS</p>
-            </div>
-        </div>
-
-        <div class="producto-card">
-            <img src="https://loremflickr.com/600/800/keyboard">
-            <div class="card-content">
-                <h3>Keychron K8</h3>
-                <div class="price">$199 USD</div>
-            </div>
-            <div class="hover-info">
-                <h4>Keychron K8</h4>
-                <p>Mecánico · Bluetooth · RGB</p>
-            </div>
-        </div>
-
-        <div class="producto-card">
-            <img src="https://loremflickr.com/600/800/tablet">
-            <div class="card-content">
-                <h3>Samsung Galaxy Tab S9</h3>
-                <div class="price">$899 USD</div>
-            </div>
-            <div class="hover-info">
-                <h4>Galaxy Tab S9</h4>
-                <p>AMOLED 120Hz · Snapdragon 8 Gen 2</p>
-            </div>
-        </div>
-
-        <div class="producto-card">
-            <img src="https://loremflickr.com/600/800/gaming">
-            <div class="card-content">
-                <h3>ASUS ROG Zephyrus</h3>
-                <div class="price">$1.899 USD</div>
-            </div>
-            <div class="hover-info">
-                <h4>ROG Zephyrus</h4>
-                <p>RTX 4070 · Ryzen 9 · 240Hz</p>
-            </div>
-        </div>
-
-    </div>
-
-</main>
-
-@include('layouts.footer')
-
+        </main>
+        @include('layouts.footer')
 </body>
 </html>

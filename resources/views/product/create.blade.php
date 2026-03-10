@@ -205,8 +205,6 @@
             </div>
         </div>
     </main>
-
     @include('Layouts.footer')
-
 </body>
 </html>

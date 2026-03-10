@@ -2,8 +2,12 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>MacBook Air M3</title>
+    {{-- TÍTULO DINÁMICO --}}
+    <title>{{ $product->name }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {{-- Font Inter desde Google Fonts --}}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         * {
@@ -41,6 +45,7 @@
         .producto-img img {
             width: 100%;
             border-radius: 12px;
+            border: 1px solid #222; /* Borde sutil */
         }
 
         .producto-info h1 {
@@ -70,7 +75,6 @@
             color: #aaa;
         }
 
-        /* NUEVO BLOQUE INFO */
         .info-extra {
             margin-bottom: 30px;
             padding: 15px;
@@ -85,7 +89,6 @@
             font-size: 0.95rem;
         }
 
-        /* BOTONES ADMIN */
         .btn-group {
             display: flex;
             gap: 15px;
@@ -149,23 +152,25 @@
 </head>
 <body>
 
-@include('layouts.navbar')
+@include('Layouts.navbar')
 
 <main>
     <div class="producto-container">
 
         <div class="producto-img">
-            <img src="https://loremflickr.com/900/700/macbook" alt="MacBook Air M3">
+            @if ($product->image)
+                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+            @else
+                <img src="{{ asset('images/product-default.png') }}" alt="Imagen no disponible">
+            @endif
         </div>
 
         <div class="producto-info">
-            <h1>MacBook Air M3</h1>
-            <div class="precio">$1.299 USD</div>
+            <h1>{{ $product->name }}</h1>
+            <div class="precio">${{ number_format($product->price, 2) }} USD</div>
 
             <p class="descripcion">
-                La nueva MacBook Air con chip M3 ofrece rendimiento increíble,
-                batería de hasta 18 horas y un diseño ultraligero perfecto
-                para trabajo y estudio.
+                {{ $product->description }}
             </p>
 
             <ul class="specs">
@@ -176,14 +181,12 @@
                 <li>✔ Hasta 18 horas de batería</li>
             </ul>
 
-            <!-- NUEVA SECCIÓN -->
             <div class="info-extra">
-                <p><strong>Categoría:</strong> Portátiles</p>
+                <p><strong>Categoría:</strong> {{ $product->category->name }}</p>
                 <p><strong>Stock:</strong> 12 unidades disponibles</p>
                 <p><strong>SKU:</strong> MBA-M3-512-16GB</p>
             </div>
 
-            <!-- NUEVOS BOTONES -->
             <div class="btn-group">
                 <a href="#" class="btn btn-editar">Editar</a>
                 <a href="#" class="btn btn-eliminar">Eliminar</a>
@@ -195,7 +198,7 @@
     </div>
 </main>
 
-@include('layouts.footer')
+@include('Layouts.footer')
 
 </body>
 </html>

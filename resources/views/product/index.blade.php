@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
-        /* (Tu CSS está excelente, lo mantengo igual) */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -102,6 +101,7 @@
             border-radius: 8px;
             overflow: hidden;
             transition: 0.3s ease;
+            cursor: pointer; /* Añadido para que parezca clickeable */
         }
 
         .producto-card img {
@@ -177,26 +177,41 @@
 
 <body>
     @include('layouts.navbar')
-    <<div class="catalogo-grid">
-        @forelse ($miLista as $item)
-            <div class="producto-card">
-                <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}">
-                <div class="card-content">
-                    <h3>{{ $item->name }}</h3>
-                    <div class="price">${{ number_format($item->price, 2) }} USD</div>
-                </div>
-                <div class="hover-info">
-                    <h4>{{ $item->name }}</h4>
-                    <p>{{ $item->description }}</p>
-                </div>
-            </div>
-        @empty
-            <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
-                <p>No hay productos disponibles por el momento.</p>
-            </div>
-        @endforelse
+    
+    <main>
+        <div class="header-catalogo">
+            <h1 class="titulo-pagina">Catálogo de Productos</h1>
+            <a href="{{ route('product.create') }}" class="btn-nuevo-producto">+ Nuevo Producto</a>
         </div>
-        </main>
-        @include('layouts.footer')
+
+        <div class="catalogo-grid">
+            @forelse ($miLista as $item)
+                <a href="{{ route('product.show', $item->id) }}" style="text-decoration: none; color: inherit; display: block;">
+                    <div class="producto-card">
+                        @if ($item->image)
+                            <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}">
+                        @else
+                            <img src="https://via.placeholder.com/300x260/222222/cccccc?text=Sin+Imagen" alt="Sin imagen">
+                        @endif
+                        
+                        <div class="card-content">
+                            <h3>{{ $item->name }}</h3>
+                            <div class="price">${{ number_format($item->price, 2) }} USD</div>
+                        </div>
+                        <div class="hover-info">
+                            <h4>{{ $item->name }}</h4>
+                            <p>{{ Str::limit($item->description, 80) }}</p>
+                        </div>
+                    </div>
+                </a>
+            @empty
+                <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                    <p>No hay productos disponibles por el momento.</p>
+                </div>
+            @endforelse
+        </div>
+    </main>
+
+    @include('layouts.footer')
 </body>
 </html>

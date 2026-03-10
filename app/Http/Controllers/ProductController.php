@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+// Importamos la fachada Storage para manejar archivos
+use Illuminate\Support\Facades\Storage; 
 
 class ProductController extends Controller
 {
@@ -18,7 +20,6 @@ class ProductController extends Controller
 
     public function create()
     {
-        // Corregido: Variable en minúscula por convención
         $categorias = Category::all(); 
         return view('product.create', [
             'categorias' => $categorias
@@ -29,18 +30,26 @@ class ProductController extends Controller
     {
         $request->validate([
             'nombre' => 'required',
-            'decripcion' => 'required',
             'precio' => 'required|numeric',
             'category_id' => 'required|exists:categories,id',
-            'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
-
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048' 
         ]);
 
         $newProduct = new Product();
         $newProduct->name = $request->input('nombre');
         $newProduct->description = $request->input('descripcion');
         $newProduct->price = $request->input('precio');
-        $newProduct->category_id = $request->input('category_id'); 
+        $newProduct->category_id = $request->input('category_id');
+
+        //LÓGICA DE SUBIDA DE IMAGEN
+        if ($request->hasFile('imagen')) {
+            $imageName = time().'_'.$request->file('imagen')->getClientOriginalName();
+            
+            $path = $request->file('imagen')->storeAs('products', $imageName, 'public'); 
+            
+            $newProduct->image = $path; 
+        }
+
         $newProduct->save();
         
         return redirect()->route('product.index');
@@ -48,6 +57,8 @@ class ProductController extends Controller
 
     public function show($id, $categoria = null)
     {
-        return view('product.show');
+        $product = Product::findOrFail($id); 
+
+        return view('product.show', compact('product'));
     }
 }

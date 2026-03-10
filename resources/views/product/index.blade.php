@@ -101,7 +101,7 @@
             border-radius: 8px;
             overflow: hidden;
             transition: 0.3s ease;
-            cursor: pointer; /* Añadido para que parezca clickeable */
+            cursor: pointer;
         }
 
         .producto-card img {
@@ -148,29 +148,116 @@
             opacity: 1;
         }
 
-        /* Responsividad */
+        /* Responsividad Catálogo */
         @media (max-width: 1300px) {
-            .catalogo-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
+            .catalogo-grid { grid-template-columns: repeat(4, 1fr); }
         }
-
         @media (max-width: 1000px) {
-            .catalogo-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
+            .catalogo-grid { grid-template-columns: repeat(3, 1fr); }
         }
-
         @media (max-width: 700px) {
-            .catalogo-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .catalogo-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 500px) {
+            .catalogo-grid { grid-template-columns: 1fr; }
         }
 
-        @media (max-width: 500px) {
-            .catalogo-grid {
-                grid-template-columns: 1fr;
-            }
+        /* ========================================================
+           ESTILOS PAGINADOR - ELIMINADOR DE SALTOS DE LÍNEA TAILWIND
+           ======================================================== */
+        .paginacion-contenedor {
+            margin-top: 50px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding-bottom: 20px;
+        }
+
+        /* 1. Ocultar vistas móviles extra y texto de resultados */
+        .paginacion-contenedor nav > div:first-child,
+        .paginacion-contenedor p.text-sm {
+            display: none !important;
+        }
+
+        /* 2. Forzar a todos los contenedores padre a ser filas horizontales */
+        .paginacion-contenedor nav > div:last-child,
+        .paginacion-contenedor nav > div:last-child > div {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 100% !important;
+        }
+
+        /* 3. La caja principal de Tailwind (inline-flex o isolate dependiendo la versión) */
+        .paginacion-contenedor .inline-flex,
+        .paginacion-contenedor .isolate {
+            display: flex !important;
+            flex-direction: row !important; /* RESTRINGE ABSOLUTAMENTE A UNA FILA */
+            flex-wrap: nowrap !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+
+        /* 4. Limpiar los botones directos (Cajas de flechas y números) */
+        .paginacion-contenedor .inline-flex > *,
+        .paginacion-contenedor .isolate > * {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 38px !important;
+            height: 38px !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            background: transparent !important;
+            border: none !important;
+            border-radius: 50% !important;
+            color: #aaa !important;
+            font-size: 0.95rem !important;
+            font-weight: 500 !important;
+            text-decoration: none !important;
+            box-shadow: none !important;
+        }
+
+        /* 5. Asegurar que los spans internos no rompan la caja de 38x38 */
+        .paginacion-contenedor .inline-flex > * > *,
+        .paginacion-contenedor .isolate > * > * {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: transparent !important;
+            border: none !important;
+            border-radius: 50% !important;
+            color: inherit !important;
+        }
+
+        /* 6. Efecto Hover solo para los links clickeables */
+        .paginacion-contenedor a:hover,
+        .paginacion-contenedor a:hover > * {
+            background: #1f1f25 !important;
+            color: #fff !important;
+        }
+
+        /* 7. Color de la página activa */
+        .paginacion-contenedor span[aria-current="page"] > span {
+            background: #2a2a35 !important;
+            color: #8bb9fe !important;
+            font-weight: 600 !important;
+        }
+
+        /* 8. Fijar tamaño del SVG y quitarle márgenes conflictivos */
+        .paginacion-contenedor svg {
+            width: 18px !important;
+            height: 18px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            display: block !important;
         }
     </style>
 </head>
@@ -210,6 +297,13 @@
                 </div>
             @endforelse
         </div>
+
+        @if($miLista->hasPages())
+            <div class="paginacion-contenedor">
+                {{ $miLista->links() }}
+            </div>
+        @endif
+
     </main>
 
     @include('layouts.footer')

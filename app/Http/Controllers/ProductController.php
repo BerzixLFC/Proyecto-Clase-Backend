@@ -12,7 +12,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $productList = Product::all();
+        $productList = Product::paginate(10);
         return view('product.index', [
             'miLista' => $productList
         ]);
@@ -44,9 +44,7 @@ class ProductController extends Controller
         //LÓGICA DE SUBIDA DE IMAGEN
         if ($request->hasFile('imagen')) {
             $imageName = time().'_'.$request->file('imagen')->getClientOriginalName();
-            
             $path = $request->file('imagen')->storeAs('products', $imageName, 'public'); 
-            
             $newProduct->image = $path; 
         }
 
@@ -58,7 +56,13 @@ class ProductController extends Controller
     public function show($id, $categoria = null)
     {
         $product = Product::findOrFail($id); 
-
         return view('product.show', compact('product'));
     }
+
+    public function detroy(Product $product)
+    {
+        $product->delete();
+        return redirect()->route('product.index');
+    }
+
 }

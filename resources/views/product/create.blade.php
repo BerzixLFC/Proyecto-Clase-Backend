@@ -155,7 +155,6 @@
             <div class="form-card">
                 <h2>Registrar Nuevo Producto</h2>
 
-                {{-- Mostramos errores de validación si existen --}}
                 @if ($errors->any())
                     <div style="background: rgba(255,0,0,0.1); border: 1px solid #ff6b6b; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
                         <ul style="margin: 0; color: #ff6b6b;">
@@ -171,12 +170,12 @@
 
                     <div class="form-group">
                         <label for="nombre">Nombre del Producto</label>
-                        <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Ej: MacBook Pro M3" value="{{ old('nombre') }}" required>
+                        <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Ej: MacBook Pro M3" value="{{ old('nombre') }}">
                     </div>
 
                     <div class="form-group">
                         <label for="precio">Precio (USD)</label>
-                        <input type="number" id="precio" name="precio" class="form-control" placeholder="1999.00" step="0.01" min="0" value="{{ old('precio') }}" required>
+                        <input type="number" id="precio" name="precio" class="form-control" placeholder="1999.00" step="0.01" min="0" value="{{ old('precio') }}">
                     </div>
 
                     <div class="form-group">
@@ -191,8 +190,7 @@
 
                     <div class="form-group">
                         <label for="category_id">Categoría</label>
-                        {{-- Se cambió name="estado" por name="category_id" para que coincida con el controlador --}}
-                        <select id="category_id" name="category_id" class="form-control" required>
+                        <select id="category_id" name="category_id" class="form-control">
                             <option value="">Seleccione una categoría</option>
                             @foreach ($categorias as $categoria)
                                 <option value="{{ $categoria->id }}" {{ old('category_id') == $categoria->id ? 'selected' : '' }}>

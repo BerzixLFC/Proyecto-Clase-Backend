@@ -29,8 +29,11 @@ class ProductController extends Controller
     {
         $request->validate([
             'nombre' => 'required',
+            'decripcion' => 'required',
             'precio' => 'required|numeric',
             'category_id' => 'required|exists:categories,id',
+            'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+
         ]);
 
         $newProduct = new Product();

@@ -180,7 +180,7 @@
     <<div class="catalogo-grid">
         @forelse ($miLista as $item)
             <div class="producto-card">
-                <img src="{{ asset('img/default-product.png') }}" alt="{{ $item->name }}">
+                <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}">
                 <div class="card-content">
                     <h3>{{ $item->name }}</h3>
                     <div class="price">${{ number_format($item->price, 2) }} USD</div>

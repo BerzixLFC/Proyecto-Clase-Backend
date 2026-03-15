@@ -40,9 +40,7 @@
         .hero h1 { font-size: 4rem; font-weight: 700; line-height: 1.1; margin-bottom: 20px; color: #fff; }
         .hero p { font-size: 1.2rem; color: #ccc; margin-bottom: 30px; }
 
-        /* ========================================================
-           2. SECCIÓN DE PRODUCTOS (Reutilizable)
-           ======================================================== */
+        /* 2. SECCIÓN DE PRODUCTOS (Reutilizable)*/
         .products-section { max-width: 1400px; margin: 0 auto 80px auto; padding: 0 40px; }
         .products-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px; }
         .products-header h2 { font-size: 2rem; font-weight: 600; }

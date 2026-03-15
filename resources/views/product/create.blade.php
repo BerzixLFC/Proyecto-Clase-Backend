@@ -84,6 +84,11 @@
             resize: vertical;
             min-height: 100px;
         }
+        
+        /* Ajuste para el textarea de caracteristicas para que sea más alto */
+        #specifications.form-control {
+            min-height: 130px;
+        }
 
         input[type="file"].form-control {
             padding: 10px;
@@ -148,7 +153,7 @@
 </head>
 <body>
 
-    @include('Layouts.navbar')
+    @include('layouts.navbar')
 
     <main>
         <div class="registro-wrapper">
@@ -179,8 +184,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="descripcion">Descripción</label>
-                        <textarea id="descripcion" name="descripcion" class="form-control" placeholder="Chip M3, 16GB RAM, 512GB SSD...">{{ old('descripcion') }}</textarea>
+                        <label for="descripcion">Descripción Breve</label>
+                        <textarea id="descripcion" name="descripcion" class="form-control" placeholder="Un resumen atractivo del producto...">{{ old('descripcion') }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="specifications">Características (Escribe una por línea)</label>
+                        <textarea id="specifications" name="specifications" class="form-control" placeholder="Chip M3&#10;16GB RAM&#10;512GB SSD">{{ old('specifications') }}</textarea>
                     </div>
 
                     <div class="form-group">
@@ -205,6 +215,8 @@
             </div>
         </div>
     </main>
-    @include('Layouts.footer')
+    
+    @include('layouts.footer')
+
 </body>
 </html>

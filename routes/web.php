@@ -11,5 +11,9 @@ Route::controller(ProductController::class)->prefix('product')->group(function (
     Route::get('/create', 'create')->name('product.create');
     Route::post('/store', 'store')->name('product.store'); 
     Route::get('/{id}/{categoria?}', 'show')->name('product.show');
+    
+    // AGREGA ESTA LÍNEA PARA QUE FUNCIONE EL MODAL:
+    Route::put('/{product}', 'update')->name('product.update'); 
+    
     Route::delete('/{product}', 'destroy')->name('product.destroy');
 });

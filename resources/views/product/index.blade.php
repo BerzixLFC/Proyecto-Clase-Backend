@@ -303,9 +303,7 @@
                 {{ $miLista->links() }}
             </div>
         @endif
-
     </main>
-
     @include('layouts.footer')
 </body>
 </html>

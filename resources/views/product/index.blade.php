@@ -14,44 +14,14 @@
             padding: 0;
         }
 
+        /* 1. CAMBIO A TEMA CLARO */
         body {
             font-family: 'Inter', sans-serif;
-            background: #0b0b0f;
-            color: #f5f5f7;
+            background: #f8f9fa; /* Fondo blanco/gris claro */
+            color: #333; /* Texto oscuro */
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-        }
-
-        header {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            align-items: center;
-            padding: 1.2rem 3rem;
-            border-bottom: 1px solid #1a1a1f;
-        }
-
-        .logo {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #fff;
-        }
-
-        nav {
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: #777;
-            font-size: 0.9rem;
-            transition: 0.2s;
-        }
-
-        nav a:hover {
-            color: #fff;
         }
 
         main {
@@ -67,41 +37,66 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .titulo-pagina {
             font-size: 2.4rem;
             font-weight: 600;
+            color: #111;
         }
 
-        .btn-nuevo-producto {
-            border: 1px solid #333;
-            padding: 10px 22px;
-            border-radius: 30px;
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: 0.3s;
+        /* 2. BUSCADOR HORIZONTAL (Reemplaza al botón) */
+        .filter-form { 
+            display: flex; 
+            gap: 10px; 
+            align-items: center; 
         }
-
-        .btn-nuevo-producto:hover {
+        .filter-input, .filter-select { 
+            padding: 10px 15px; 
+            border: 1px solid #ccc; 
+            border-radius: 6px; 
+            font-family: inherit; 
+            font-size: 0.95rem; 
+            outline: none; 
             background: #fff;
-            color: #000;
+            color: #333;
+        }
+        .filter-input:focus, .filter-select:focus { 
+            border-color: #6b326b; 
+        }
+        .filter-btn { 
+            background: #6b326b; 
+            color: #fff; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 6px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: 0.2s;
+        }
+        .filter-btn:hover { 
+            background: #522552; 
         }
 
+        /* 3. TU GRID ORIGINAL DE 5 COLUMNAS */
         .catalogo-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 25px;
         }
 
+        /* 4. TARJETA EN TEMA CLARO MANTENIENDO TU ESTRUCTURA */
         .producto-card {
             position: relative;
-            background: #111;
+            background: #fff; /* Tarjeta blanca */
             border-radius: 8px;
             overflow: hidden;
             transition: 0.3s ease;
             cursor: pointer;
+            border: 1px solid #eaeaea; /* Borde sutil */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
         }
 
         .producto-card img {
@@ -109,10 +104,16 @@
             height: 260px;
             object-fit: cover;
             transition: 0.5s;
+            border-bottom: 1px solid #f0f0f0;
         }
 
         .producto-card:hover img {
             transform: scale(1.05);
+        }
+
+        .producto-card:hover {
+            border-color: #6b326b;
+            box-shadow: 0 8px 20px rgba(107, 50, 107, 0.1);
         }
 
         .card-content {
@@ -121,15 +122,18 @@
 
         .card-content h3 {
             font-size: 1rem;
-            font-weight: 500;
+            font-weight: 600;
+            color: #111;
         }
 
         .price {
             margin-top: 6px;
-            font-size: 0.9rem;
-            color: #aaa;
+            font-size: 1rem;
+            color: #6b326b; /* Precio en morado */
+            font-weight: 700;
         }
 
+        /* TU EFECTO HOVER INTACTO */
         .hover-info {
             position: absolute;
             inset: 0;
@@ -142,13 +146,14 @@
             padding: 20px;
             opacity: 0;
             transition: opacity 0.3s ease;
+            color: #fff;
         }
 
         .producto-card:hover .hover-info {
             opacity: 1;
         }
 
-        /* Responsividad Catálogo */
+        /* Responsividad Catálogo Original */
         @media (max-width: 1300px) {
             .catalogo-grid { grid-template-columns: repeat(4, 1fr); }
         }
@@ -160,10 +165,13 @@
         }
         @media (max-width: 500px) {
             .catalogo-grid { grid-template-columns: 1fr; }
+            .header-catalogo { flex-direction: column; align-items: stretch; }
+            .filter-form { flex-direction: column; }
+            .filter-input, .filter-select, .filter-btn { width: 100%; }
         }
 
         /* ========================================================
-           ESTILOS PAGINADOR - ELIMINADOR DE SALTOS DE LÍNEA TAILWIND
+           TUS ESTILOS PAGINADOR INTACTOS (ADAPTADOS A COLOR CLARO)
            ======================================================== */
         .paginacion-contenedor {
             margin-top: 50px;
@@ -173,13 +181,11 @@
             padding-bottom: 20px;
         }
 
-        /* 1. Ocultar vistas móviles extra y texto de resultados */
         .paginacion-contenedor nav > div:first-child,
         .paginacion-contenedor p.text-sm {
             display: none !important;
         }
 
-        /* 2. Forzar a todos los contenedores padre a ser filas horizontales */
         .paginacion-contenedor nav > div:last-child,
         .paginacion-contenedor nav > div:last-child > div {
             display: flex !important;
@@ -189,11 +195,10 @@
             width: 100% !important;
         }
 
-        /* 3. La caja principal de Tailwind (inline-flex o isolate dependiendo la versión) */
         .paginacion-contenedor .inline-flex,
         .paginacion-contenedor .isolate {
             display: flex !important;
-            flex-direction: row !important; /* RESTRINGE ABSOLUTAMENTE A UNA FILA */
+            flex-direction: row !important;
             flex-wrap: nowrap !important;
             align-items: center !important;
             justify-content: center !important;
@@ -203,7 +208,6 @@
             border: none !important;
         }
 
-        /* 4. Limpiar los botones directos (Cajas de flechas y números) */
         .paginacion-contenedor .inline-flex > *,
         .paginacion-contenedor .isolate > * {
             display: flex !important;
@@ -216,14 +220,13 @@
             background: transparent !important;
             border: none !important;
             border-radius: 50% !important;
-            color: #aaa !important;
+            color: #666 !important; /* Gris oscuro para modo claro */
             font-size: 0.95rem !important;
             font-weight: 500 !important;
             text-decoration: none !important;
             box-shadow: none !important;
         }
 
-        /* 5. Asegurar que los spans internos no rompan la caja de 38x38 */
         .paginacion-contenedor .inline-flex > * > *,
         .paginacion-contenedor .isolate > * > * {
             display: flex !important;
@@ -237,21 +240,20 @@
             color: inherit !important;
         }
 
-        /* 6. Efecto Hover solo para los links clickeables */
+        /* Hover para modo claro */
         .paginacion-contenedor a:hover,
         .paginacion-contenedor a:hover > * {
-            background: #1f1f25 !important;
-            color: #fff !important;
+            background: #e0e0e0 !important;
+            color: #111 !important;
         }
 
-        /* 7. Color de la página activa */
+        /* Página activa en modo claro (usando tu morado) */
         .paginacion-contenedor span[aria-current="page"] > span {
-            background: #2a2a35 !important;
-            color: #8bb9fe !important;
+            background: #6b326b !important;
+            color: #fff !important;
             font-weight: 600 !important;
         }
 
-        /* 8. Fijar tamaño del SVG y quitarle márgenes conflictivos */
         .paginacion-contenedor svg {
             width: 18px !important;
             height: 18px !important;
@@ -263,13 +265,29 @@
 </head>
 
 <body>
-    @include('layouts.navbar')
+    @include('Layouts.navbar')
     
     <main>
         <div class="header-catalogo">
             <h1 class="titulo-pagina">Catálogo de Productos</h1>
-            <a href="{{ route('product.create') }}" class="btn-nuevo-producto">+ Nuevo Producto</a>
+            
+            <form action="{{ route('product.index') }}" method="GET" class="filter-form">
+                <input type="text" name="search" class="filter-input" placeholder="Buscar producto..." value="{{ request('search') }}">
+                <select name="category" class="filter-select">
+                    <option value="">Todas las Categorías</option>
+                    @foreach($categorias ?? [] as $cat)
+                        <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                    @endforeach
+                </select>
+                <button type="submit" class="filter-btn">Buscar</button>
+            </form>
         </div>
+
+        @if(session('success'))
+            <div style="background: #e0f8e9; color: #1e7e34; padding: 15px; border-radius: 8px; margin-bottom: 25px; text-align: center; font-weight: 600; border: 1px solid #c3e6cb;">
+                🎉 {{ session('success') }}
+            </div>
+        @endif
 
         <div class="catalogo-grid">
             @forelse ($miLista as $item)
@@ -278,32 +296,33 @@
                         @if ($item->image)
                             <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}">
                         @else
-                            <img src="https://via.placeholder.com/300x260/222222/cccccc?text=Sin+Imagen" alt="Sin imagen">
+                            <img src="https://via.placeholder.com/300x260/f8f9fa/cccccc?text=Sin+Imagen" alt="Sin imagen">
                         @endif
                         
                         <div class="card-content">
                             <h3>{{ $item->name }}</h3>
-                            <div class="price">${{ number_format($item->price, 2) }} USD</div>
+                            <div class="price">${{ number_format($item->price, 2) }}</div>
                         </div>
                         <div class="hover-info">
                             <h4>{{ $item->name }}</h4>
-                            <p>{{ Str::limit($item->description, 80) }}</p>
+                            <p style="margin-top: 8px; font-size: 0.9rem;">{{ Str::limit($item->description, 80) }}</p>
                         </div>
                     </div>
                 </a>
             @empty
                 <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
-                    <p>No hay productos disponibles por el momento.</p>
+                    <p style="color: #666; font-size: 1.1rem;">No hay productos disponibles por el momento con esos filtros.</p>
                 </div>
             @endforelse
         </div>
 
-        @if($miLista->hasPages())
+        @if(isset($miLista) && $miLista->hasPages())
             <div class="paginacion-contenedor">
                 {{ $miLista->links() }}
             </div>
         @endif
     </main>
-    @include('layouts.footer')
+    
+    @include('Layouts.footer')
 </body>
 </html>

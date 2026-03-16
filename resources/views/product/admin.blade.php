@@ -47,6 +47,14 @@
 </head>
 <body>
 
+    @php
+        // Filtramos los productos según la categoría seleccionada para la pestaña 1
+        $listaFinal = isset($products) ? $products : collect([]);
+        if(request()->has('category') && request('category') != "") {
+            $listaFinal = $listaFinal->where('category_id', request('category'));
+        }
+    @endphp
+
     <div class="sidebar">
         <h2>Panel Admin</h2>
         <a href="#" id="nav-products" class="nav-link active" onclick="showTab('products', event)">📦 Productos</a>
@@ -83,7 +91,7 @@
                     <tr><th>Img</th><th>Nombre</th><th>Precio</th><th>Categoría</th><th>Stock</th><th>Acciones</th></tr>
                 </thead>
                 <tbody>
-                    @forelse($productList ?? [] as $item)
+                    @forelse($listaFinal as $item)
                     <tr>
                         <td class="img-cell">
                             @if ($item->image) <img src="{{ asset('storage/' . $item->image) }}"> @else N/A @endif
@@ -126,7 +134,7 @@
                                 <button type="submit" class="action-btn edit">Actualizar</button>
                             </form>
                         </td>
-                        <td>{{ $cat->products_count ?? 0 }}</td>
+                        <td>{{ $cat->products()->count() ?? 0 }}</td>
                         <td>
                             <form action="{{ route('category.destroy', $cat->id) }}" method="POST" style="display:inline;">
                                 @csrf @method('DELETE')
@@ -185,7 +193,7 @@
                 </div>
                 
                 <div class="products-grid" id="productos-lista">
-                    @forelse($allProducts ?? [] as $prod)
+                    @forelse($products ?? [] as $prod)
                         <label class="product-check-card" data-cat="{{ $prod->category_id ?? 'all' }}">
                             <input type="checkbox" name="featured_products[]" value="{{ $prod->id }}" class="prod-checkbox" onchange="validarLimite(this)" {{ ($prod->is_featured ?? false) ? 'checked' : '' }}>
                             @if ($prod->image ?? false)

@@ -43,17 +43,22 @@ class CartController extends Controller
     {
         $userId = $this->getUserId();
         $product = Product::findOrFail($productId);
+        
+        // Atrapamos la cantidad que envía la vista (por defecto 1 si no envían nada)
+        $qty = $request->input('quantity', 1);
 
         $cartItem = carItem::where('user_id', $userId)->where('product_id', $productId)->first();
 
         if ($cartItem) {
-            $cartItem->quantity += 1;
+            // Si ya existe el producto, le sumamos la cantidad seleccionada
+            $cartItem->quantity += $qty;
             $cartItem->save();
         } else {
+            // Si es nuevo en el carrito, lo creamos con esa cantidad
             carItem::create([
                 'user_id' => $userId,
                 'product_id' => $productId,
-                'quantity' => 1
+                'quantity' => $qty
             ]);
         }
 
@@ -68,23 +73,14 @@ class CartController extends Controller
         return redirect()->back()->with('show_cart', true);
     }
 
-    // ==========================================
-    // SIMULAR COMPRA
-    // ==========================================
     public function clear()
     {
         $userId = $this->getUserId();
-        
-        // Vaciamos el carrito en la base de datos
         carItem::where('user_id', $userId)->delete();
 
-        // Ahora enviamos a la vista dedicada de compra exitosa
         return redirect()->route('cart.success');
     }
 
-    // ==========================================
-    // PANTALLA DE ÉXITO
-    // ==========================================
     public function success()
     {
         return view('cart.success');

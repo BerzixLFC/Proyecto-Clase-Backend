@@ -67,13 +67,12 @@
         .specs-row h3 { font-size: 0.95rem; margin-bottom: 8px; color: #000; text-transform: uppercase; letter-spacing: 0.5px; }
         .specs-row ul { list-style: none; font-size: 0.9rem; color: var(--gray-text); line-height: 1.4; }
 
-        /* BOTONES DE COMPRA */
+        /* BOTONES DE COMPRA Y CANTIDAD */
         .actions { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
-        .btn-add { background: var(--soft-pink); color: var(--primary-purple); border: none; padding: 18px; font-weight: 600; border-radius: 8px; cursor: pointer; font-size: 1rem; }
+        .btn-add { background: var(--soft-pink); color: var(--primary-purple); border: none; padding: 18px; font-weight: 600; border-radius: 8px; cursor: pointer; font-size: 1rem; flex-grow: 1;}
         .btn-buy { background: var(--primary-purple); color: #fff; border: none; padding: 18px; font-weight: 600; border-radius: 8px; cursor: pointer; font-size: 1rem; }
         
-        /* BOTONES DESHABILITADOS (SIN STOCK) */
-        .btn-disabled { background: #e0e0e0; color: #a0a0a0; border: none; padding: 18px; font-weight: 600; border-radius: 8px; cursor: not-allowed; font-size: 1rem; }
+        .btn-disabled { background: #e0e0e0; color: #a0a0a0; border: none; padding: 18px; font-weight: 600; border-radius: 8px; cursor: not-allowed; font-size: 1rem; width: 100%;}
         .stock-warning { color: #ff4d4d; font-size: 0.9rem; font-weight: 600; text-align: center; margin-top: 5px; }
 
         /* DESCRIPCIÓN */
@@ -116,7 +115,7 @@
         .btn-delete-action { background: #ffe6e6; color: #cc0000; }
         .btn-delete-action:hover { background: #ffcccc; }
 
-        /* MODAL DE EDICIÓN (Expandido) */
+        /* MODAL DE EDICIÓN */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
         .modal-overlay.active { display: flex; }
         .modal-content { background: #fff; width: 100%; max-width: 800px; padding: 35px; border-radius: 12px; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
@@ -207,9 +206,10 @@
 
         @if($product->is_in_stock)
             <div class="actions">
-                <form action="{{ route('cart.add', $product->id) }}" method="POST" style="margin: 0; width: 100%;">
+                <form action="{{ route('cart.add', $product->id) }}" method="POST" style="margin: 0; width: 100%; display: flex; gap: 10px;">
                     @csrf
-                    <button type="submit" class="btn-add" style="width: 100%;">Añadir al Carrito</button>
+                    <input type="number" name="quantity" value="1" min="1" max="50" style="width: 70px; text-align: center; border: 1px solid #ccc; border-radius: 8px; font-weight: bold; font-size: 1rem; outline: none;">
+                    <button type="submit" class="btn-add">Añadir al Carrito</button>
                 </form>
                 <button class="btn-buy">Comprar Ahora</button>
             </div>
@@ -226,7 +226,7 @@
         </div>
     </div>
 
-    {{-- BARRA DE ADMIN: Solo visible si viene del panel de administrador o se activa --}}
+    {{-- BARRA DE ADMIN --}}
     @if($isAdmin || $autoEdit)
     <div class="admin-bar">
         <a href="{{ route('product.admin') }}" class="btn-admin-action btn-back-admin">← Volver al Panel Admin</a>
@@ -242,7 +242,7 @@
     @endif
 </main>
 
-{{-- MODAL DE EDICIÓN COMPLETA: Solo renderizado si es admin --}}
+{{-- MODAL DE EDICIÓN COMPLETA --}}
 @if($isAdmin || $autoEdit)
 <div class="modal-overlay" id="editModal">
     <div class="modal-content">
@@ -329,7 +329,6 @@
 @include('Layouts.footer')
 
 <script>
-    // --- LÓGICA DEL MODAL ---
     function openModal() { 
         let modal = document.getElementById('editModal');
         if(modal) {
@@ -353,14 +352,12 @@
         }
     }
 
-    // --- AUTO-ABRIR MODAL SI VIENE DESDE EL PANEL DE ADMINISTRADOR ---
     @if($autoEdit)
         window.addEventListener('DOMContentLoaded', (event) => {
             openModal();
         });
     @endif
 
-    // --- LÓGICA DE LA GALERÍA DE IMÁGENES ---
     const mainImage = document.getElementById('mainProductImage');
     const thumbnailsContainer = document.getElementById('productThumbnails');
 

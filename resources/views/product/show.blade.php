@@ -38,16 +38,16 @@
             object-fit: cover; 
             border-radius: 6px; 
             border: 1px solid #eee; 
-            cursor: pointer; /* Cambia el cursor a mano para indicar que se puede hacer clic */
+            cursor: pointer; 
             transition: border-color 0.2s;
         }
-        .thumbnails img:hover { border-color: var(--primary-purple); } /* Efecto hover para la miniatura */
-        .thumbnails img.active { border-color: var(--primary-purple); border-width: 2px; } /* Estilo para la miniatura activa */
+        .thumbnails img:hover { border-color: var(--primary-purple); } 
+        .thumbnails img.active { border-color: var(--primary-purple); border-width: 2px; } 
         
         .main-image { flex-grow: 1; display: flex; align-items: center; justify-content: center;}
         .main-image img { 
             max-width: 100%; 
-            max-height: 600px; /* Limita la altura máxima de la imagen principal */
+            max-height: 600px; 
             border-radius: 12px; 
             object-fit: contain; 
         }
@@ -81,8 +81,40 @@
         .description-section h3 { font-size: 1.1rem; margin-bottom: 10px; color: #000; }
         .description-section p { font-size: 0.95rem; color: var(--gray-text); line-height: 1.6; }
 
-        /* Admin Actions */
-        .admin-bar { grid-column: span 2; border-top: 1px solid #eee; padding-top: 30px; display: flex; gap: 20px; justify-content: center; margin-top: 20px; }
+        /* --- BOTONES DE LA BARRA DE ADMIN --- */
+        .admin-bar { 
+            grid-column: span 2; 
+            border-top: 1px solid #eee; 
+            padding-top: 30px; 
+            display: flex; 
+            gap: 15px; 
+            justify-content: center; 
+            align-items: center; 
+            margin-top: 20px; 
+            width: 100%;
+        }
+        
+        .btn-admin-action {
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: 0.2s;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .btn-back-admin { background: #f0f0f0; color: #333; }
+        .btn-back-admin:hover { background: #e0e0e0; }
+        
+        .btn-edit-action { background: #e6f2ff; color: #0066cc; }
+        .btn-edit-action:hover { background: #cce0ff; }
+        
+        .btn-delete-action { background: #ffe6e6; color: #cc0000; }
+        .btn-delete-action:hover { background: #ffcccc; }
 
         /* MODAL DE EDICIÓN (Expandido) */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
@@ -109,24 +141,22 @@
         @media (max-width: 1024px) { 
             main { grid-template-columns: 1fr; } 
             .specs-row, .form-grid, .image-grid, .gallery-container { grid-template-columns: 1fr; }
-            .gallery-container { flex-direction: column-reverse; } /* Invierte el orden en móvil: imagen principal arriba, thumbnails abajo */
-            .thumbnails { flex-direction: row; justify-content: center; overflow-x: auto; padding-bottom: 10px; } /* Thumbnails en fila horizontal con scroll */
+            .gallery-container { flex-direction: column-reverse; } 
+            .thumbnails { flex-direction: row; justify-content: center; overflow-x: auto; padding-bottom: 10px; } 
         }
     </style>
 </head>
 <body>
 
-@include('layouts.navbar')
+@include('Layouts.navbar')
 
 <main>
     <div class="gallery-container">
-        {{-- Recolectamos todas las imágenes disponibles en un array --}}
         @php 
             $allImages = array_filter([$product->image, $product->image_2, $product->image_3, $product->image_4]); 
             $firstImage = count($allImages) > 0 ? asset('storage/' . reset($allImages)) : asset('images/product-default.png');
         @endphp
 
-        {{-- Solo mostramos la columna de miniaturas si hay más de una imagen --}}
         @if(count($allImages) > 1)
             <div class="thumbnails" id="productThumbnails">
                 @foreach($allImages as $img)
@@ -136,7 +166,6 @@
         @endif
         
         <div class="main-image">
-            {{-- Le damos un ID a la imagen principal para poder cambiarla con JS --}}
             <img src="{{ $firstImage }}" alt="{{ $product->name }}" id="mainProductImage">
         </div>
     </div>
@@ -176,7 +205,6 @@
             </div>
         </div>
 
-        {{-- LÓGICA DE BOTONES SEGÚN STOCK --}}
         @if($product->is_in_stock)
             <div class="actions">
                 <button class="btn-add">Añadir al Carrito</button>
@@ -195,14 +223,24 @@
         </div>
     </div>
 
+    {{-- BARRA DE ADMIN: Solo visible si viene del panel de administrador o se activa --}}
+    @if($isAdmin || $autoEdit)
     <div class="admin-bar">
-        <a href="{{ route('product.index') }}" style="text-decoration: none; color: var(--gray-text)">Volver al catálogo</a>
-        <a href="#" onclick="openModal(); return false;" style="text-decoration: none; color: #4da3ff; font-weight: 600;">Editar Producto</a>
-        <a href="#" style="text-decoration: none; color: #ff4d4d; font-weight: 600;">Eliminar</a>
+        <a href="{{ route('product.admin') }}" class="btn-admin-action btn-back-admin">← Volver al Panel Admin</a>
+        
+        <a href="#" onclick="openModal(); return false;" class="btn-admin-action btn-edit-action">✏️ Editar Producto</a>
+        
+        <form action="{{ route('product.destroy', $product->id) }}" method="POST" style="margin: 0; display: flex;">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn-admin-action btn-delete-action" onclick="return confirm('¿Seguro que deseas eliminar este producto?')">🗑️ Eliminar</button>
+        </form>
     </div>
+    @endif
 </main>
 
-{{-- MODAL DE EDICIÓN COMPLETA --}}
+{{-- MODAL DE EDICIÓN COMPLETA: Solo renderizado si es admin --}}
+@if($isAdmin || $autoEdit)
 <div class="modal-overlay" id="editModal">
     <div class="modal-content">
         <div class="modal-header">
@@ -283,19 +321,26 @@
         </form>
     </div>
 </div>
+@endif
 
-@include('layouts.footer')
+@include('Layouts.footer')
 
 <script>
     // --- LÓGICA DEL MODAL ---
     function openModal() { 
-        document.getElementById('editModal').classList.add('active'); 
-        document.body.style.overflow = 'hidden'; 
+        let modal = document.getElementById('editModal');
+        if(modal) {
+            modal.classList.add('active'); 
+            document.body.style.overflow = 'hidden'; 
+        }
     }
     
     function closeModal() { 
-        document.getElementById('editModal').classList.remove('active'); 
-        document.body.style.overflow = 'auto'; 
+        let modal = document.getElementById('editModal');
+        if(modal) {
+            modal.classList.remove('active'); 
+            document.body.style.overflow = 'auto'; 
+        }
     }
 
     window.onclick = function(event) {
@@ -305,30 +350,28 @@
         }
     }
 
+    // --- AUTO-ABRIR MODAL SI VIENE DESDE EL PANEL DE ADMINISTRADOR ---
+    @if($autoEdit)
+        window.addEventListener('DOMContentLoaded', (event) => {
+            openModal();
+        });
+    @endif
+
     // --- LÓGICA DE LA GALERÍA DE IMÁGENES ---
-    // Obtenemos las referencias a los elementos una sola vez
     const mainImage = document.getElementById('mainProductImage');
     const thumbnailsContainer = document.getElementById('productThumbnails');
 
-    // Verificamos si existe el contenedor de miniaturas (solo aparece si hay > 1 imagen)
     if (thumbnailsContainer) {
         const thumbnails = thumbnailsContainer.getElementsByTagName('img');
 
-        // Escuchamos el evento click en el contenedor (delegación de eventos)
         thumbnailsContainer.addEventListener('click', function(event) {
-            // Comprobamos que el elemento clickeado es una imagen de miniatura
             if (event.target.tagName === 'IMG') {
                 const clickedThumbnail = event.target;
-
-                // 1. Actualizamos la fuente de la imagen principal con la fuente de la miniatura clickeada
                 mainImage.src = clickedThumbnail.src;
 
-                // 2. Actualizamos la clase 'active' para el estilo visual
-                // Removemos 'active' de todas las miniaturas
                 for (let i = 0; i < thumbnails.length; i++) {
                     thumbnails[i].classList.remove('active');
                 }
-                // Añadimos 'active' a la miniatura que ha recibido el clic
                 clickedThumbnail.classList.add('active');
             }
         });

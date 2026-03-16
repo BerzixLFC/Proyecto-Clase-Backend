@@ -10,7 +10,27 @@ use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
     // ==========================================
-    // MOSTRAR CATÁLOGO
+    // MOSTRAR PANEL DE ADMINISTRADOR
+    // ==========================================
+    public function adminIndex(Request $request)
+    {
+        $categorias = Category::all(); 
+        
+        // Si hay una categoría en la URL, filtramos. Si no, traemos todos.
+        if ($request->has('category')) {
+            $productList = Product::where('category_id', $request->input('category'))->get();
+        } else {
+            $productList = Product::all(); 
+        }
+        
+        return view('product.admin', [
+            'productList' => $productList,
+            'categorias' => $categorias
+        ]);
+    }
+
+    // ==========================================
+    // MOSTRAR CATÁLOGO NORMAL (CLIENTES)
     // ==========================================
     public function index()
     {
@@ -36,7 +56,6 @@ class ProductController extends Controller
     // ==========================================
     public function store(Request $request)
     {
-        // Validamos los datos que vienen del formulario de creación
         $request->validate([
             'nombre' => 'required|string|max:255',
             'precio' => 'required|numeric',
@@ -52,9 +71,8 @@ class ProductController extends Controller
         $newProduct->price = $request->input('precio');
         $newProduct->category_id = $request->input('category_id');
         $newProduct->specifications = $request->input('specifications'); 
-        // Nota: el stock se pone automáticamente en 'true' por la migración
+        $newProduct->is_in_stock = 1; // Por defecto disponible
 
-        // Guardamos la imagen principal si se subió una
         if ($request->hasFile('imagen')) {
             $imageName = time().'_'.$request->file('imagen')->getClientOriginalName();
             $path = $request->file('imagen')->storeAs('products', $imageName, 'public'); 
@@ -63,7 +81,7 @@ class ProductController extends Controller
 
         $newProduct->save();
         
-        return redirect()->route('product.index');
+        return redirect()->route('product.admin');
     }
 
     // ==========================================
@@ -72,10 +90,12 @@ class ProductController extends Controller
     public function show($id, $categoria = null)
     {
         $product = Product::findOrFail($id); 
-        // Pasamos las categorías para el select del modal de edición
         $categorias = Category::all(); 
         
-        return view('product.show', compact('product', 'categorias'));
+        $isAdmin = request()->has('admin');
+        $autoEdit = request()->has('edit');
+        
+        return view('product.show', compact('product', 'categorias', 'isAdmin', 'autoEdit'));
     }
 
     // ==========================================
@@ -83,13 +103,12 @@ class ProductController extends Controller
     // ==========================================
     public function update(Request $request, Product $product)
     {
-        // Validamos los datos enviados desde la ventana emergente
         $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
-            'is_in_stock' => 'required|boolean', // Validamos el stock
+            'is_in_stock' => 'required|boolean',
             'specifications' => 'nullable|string',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'imagen_2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -97,7 +116,6 @@ class ProductController extends Controller
             'imagen_4' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Actualizamos los datos de texto
         $product->name = $request->input('name');
         $product->price = $request->input('price');
         $product->description = $request->input('description');
@@ -105,7 +123,6 @@ class ProductController extends Controller
         $product->is_in_stock = $request->input('is_in_stock');
         $product->specifications = $request->input('specifications');
 
-        // Relación entre los inputs del formulario y las columnas de la Base de Datos
         $images = [
             'imagen' => 'image', 
             'imagen_2' => 'image_2', 
@@ -113,10 +130,7 @@ class ProductController extends Controller
             'imagen_4' => 'image_4'
         ];
 
-        // Procesamos las 4 ranuras de imágenes
         foreach($images as $input => $column) {
-            
-            // 1. Si el usuario marcó "Eliminar"
             if ($request->has('remove_'.$column)) {
                 if ($product->$column) {
                     Storage::disk('public')->delete($product->$column);
@@ -124,7 +138,6 @@ class ProductController extends Controller
                 $product->$column = null;
             }
 
-            // 2. Si el usuario subió una imagen nueva para reemplazar
             if ($request->hasFile($input)) {
                 if ($product->$column) {
                     Storage::disk('public')->delete($product->$column);
@@ -137,8 +150,7 @@ class ProductController extends Controller
 
         $product->save();
         
-        // Recargamos la misma página para ver los cambios aplicados
-        return redirect()->route('product.show', $product->id);
+        return redirect()->route('product.show', ['id' => $product->id, 'edit' => 1]);
     }
 
     // ==========================================
@@ -146,7 +158,6 @@ class ProductController extends Controller
     // ==========================================
     public function destroy(Product $product)
     {
-        // Borramos las 4 posibles imágenes almacenadas en el servidor
         $images = ['image', 'image_2', 'image_3', 'image_4'];
         
         foreach($images as $img) {
@@ -157,6 +168,6 @@ class ProductController extends Controller
         
         $product->delete();
         
-        return redirect()->route('product.index');
+        return redirect()->route('product.admin');
     }
 }

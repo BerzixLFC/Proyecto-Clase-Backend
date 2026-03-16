@@ -207,7 +207,10 @@
 
         @if($product->is_in_stock)
             <div class="actions">
-                <button class="btn-add">Añadir al Carrito</button>
+                <form action="{{ route('cart.add', $product->id) }}" method="POST" style="margin: 0; width: 100%;">
+                    @csrf
+                    <button type="submit" class="btn-add" style="width: 100%;">Añadir al Carrito</button>
+                </form>
                 <button class="btn-buy">Comprar Ahora</button>
             </div>
         @else

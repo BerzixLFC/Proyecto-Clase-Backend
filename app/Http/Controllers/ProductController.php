@@ -14,18 +14,32 @@ class ProductController extends Controller
     // ==========================================
     public function adminIndex(Request $request)
     {
-        $categorias = Category::all(); 
+        // Traemos las categorías con su conteo de productos
+        $categorias = Category::withCount('products')->get(); 
         
-        // Si hay una categoría en la URL, filtramos. Si no, traemos todos.
-        if ($request->has('category')) {
+        // Productos para la pestaña de "Productos" (con filtro backend)
+        if ($request->has('category') && $request->input('category') != "") {
             $productList = Product::where('category_id', $request->input('category'))->get();
         } else {
             $productList = Product::all(); 
         }
+
+        // Todos los productos sin filtrar para la pestaña "Landing Home"
+        $allProducts = Product::all();
+
+        // Obtener la configuración del Home para el editor
+        $homeSetting = \App\Models\HomeSetting::first() ?? (object) [
+            'hero_title' => 'El futuro de la tecnología, hoy.',
+            'hero_description' => 'Descubre nuestro catálogo con los equipos más potentes...',
+            'why_us_title' => '¿Por qué escogernos?',
+            'why_us_description' => 'Ofrecemos la mejor calidad en equipos...'
+        ];
         
         return view('product.admin', [
             'productList' => $productList,
-            'categorias' => $categorias
+            'allProducts' => $allProducts, // Pasamos la lista completa
+            'categorias' => $categorias,
+            'homeSetting' => $homeSetting
         ]);
     }
 
@@ -81,7 +95,7 @@ class ProductController extends Controller
 
         $newProduct->save();
         
-        return redirect()->route('product.admin');
+        return redirect()->route('product.admin', ['tab' => 'products']);
     }
 
     // ==========================================
@@ -168,6 +182,84 @@ class ProductController extends Controller
         
         $product->delete();
         
-        return redirect()->route('product.admin');
+        return redirect()->route('product.admin', ['tab' => 'products']);
+    }
+
+    // ==========================================
+    // CRUD CATEGORIAS
+    // ==========================================
+    public function storeCategory(Request $request) {
+        $request->validate(['name' => 'required|string|max:255']);
+        $cat = new Category();
+        $cat->name = $request->input('name');
+        $cat->save();
+        return redirect()->route('product.admin', ['tab' => 'categories']);
+    }
+
+    public function updateCategory(Request $request, $id) {
+        $request->validate(['name' => 'required|string|max:255']);
+        $cat = Category::findOrFail($id);
+        $cat->name = $request->input('name');
+        $cat->save();
+        return redirect()->route('product.admin', ['tab' => 'categories']);
+    }
+
+    public function destroyCategory($id) {
+        $cat = Category::findOrFail($id);
+        $cat->delete();
+        return redirect()->route('product.admin', ['tab' => 'categories']);
+    }
+
+    // ==========================================
+    // ACTUALIZAR LANDING PAGE (WELCOME)
+    // ==========================================
+    public function updateHomeSettings(Request $request) {
+        $request->validate([
+            'hero_title' => 'required|string',
+            'hero_description' => 'required|string',
+            'why_us_title' => 'required|string',
+            'why_us_description' => 'required|string',
+            'hero_image_1' => 'nullable|image|max:2048',
+            'hero_image_2' => 'nullable|image|max:2048',
+            'hero_image_3' => 'nullable|image|max:2048',
+            'hero_image_4' => 'nullable|image|max:2048',
+        ]);
+
+        $setting = \App\Models\HomeSetting::first();
+        if(!$setting) {
+            $setting = new \App\Models\HomeSetting();
+        }
+
+        $setting->hero_title = $request->input('hero_title');
+        $setting->hero_description = $request->input('hero_description');
+        $setting->why_us_title = $request->input('why_us_title');
+        $setting->why_us_description = $request->input('why_us_description');
+
+        // Guardar las imágenes
+        for ($i = 1; $i <= 4; $i++) {
+            $field = 'hero_image_' . $i;
+            if ($request->has('remove_'.$field)) {
+                if ($setting->$field) Storage::disk('public')->delete($setting->$field);
+                $setting->$field = null;
+            }
+            if ($request->hasFile($field)) {
+                if ($setting->$field) Storage::disk('public')->delete($setting->$field);
+                $setting->$field = $request->file($field)->storeAs('landing', time().'_img'.$i.'_'.$request->file($field)->getClientOriginalName(), 'public');
+            }
+        }
+        $setting->save();
+
+        // Actualizar Productos Destacados (Máximo 10)
+        // Primero reiniciamos todos a 0
+        Product::where('is_featured', 1)->update(['is_featured' => 0]);
+        
+        // Luego ponemos en 1 los que llegaron en el formulario
+        if($request->has('featured_products')) {
+            // limitamos a 10 por seguridad en backend
+            $selectedIds = array_slice($request->input('featured_products'), 0, 10);
+            Product::whereIn('id', $selectedIds)->update(['is_featured' => 1]);
+        }
+
+        return redirect()->route('product.admin', ['tab' => 'landing']);
     }
 }

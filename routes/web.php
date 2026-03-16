@@ -15,7 +15,15 @@ Route::controller(ProductController::class)->prefix('product')->group(function (
     Route::post('/store', 'store')->name('product.store'); 
     Route::get('/{id}/{categoria?}', 'show')->name('product.show');
     
-    // Rutas para el modal y eliminar
+    // Rutas para el modal y eliminar productos
     Route::put('/{product}', 'update')->name('product.update'); 
     Route::delete('/{product}', 'destroy')->name('product.destroy');
+
+    // NUEVAS RUTAS: CRUD Categorías
+    Route::post('/categories', 'storeCategory')->name('category.store');
+    Route::put('/categories/{id}', 'updateCategory')->name('category.update');
+    Route::delete('/categories/{id}', 'destroyCategory')->name('category.destroy');
+
+    // NUEVA RUTA: Actualizar Landing Page
+    Route::post('/settings', 'updateHomeSettings')->name('admin.settings.update');
 });
